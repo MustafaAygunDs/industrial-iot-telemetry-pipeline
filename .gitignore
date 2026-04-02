@@ -1,0 +1,7 @@
+spark-3.5.4-bin-hadoop3/
+kafka_2.12-3.6.1/
+*.tgz
+*.jar
+venv/
+.idea/
+__pycache__/
