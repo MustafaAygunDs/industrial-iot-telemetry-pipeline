@@ -97,7 +97,7 @@ MIT License
 
 ## 👤 Yazar
 
-**Mustafa AYGUN** - Data Engineer / IoT Specialist
+**Mustafa AYGÜN** - Data Engineer / IoT Specialist
 
 ---
 
