@@ -30,7 +30,7 @@ PostgreSQL (maintenance_logs)
 ```
 ## 📁 Project Structure
 ```
-veri_projesi/
+industrial-iot-telemetry-pipeline/
 ├── producer.py              # Sensor data generator (5 machines)
 ├── processor.py             # Spark streaming engine
 ├── docker-compose.yml       # Zookeeper, Kafka, PostgreSQL
@@ -123,7 +123,7 @@ ELSE:
 ### Installation
 
 \`\`\`bash
-cd ~/veri_projesi
+cd industrial-iot-telemetry-pipeline
 source .venv/bin/activate
 \`\`\`
 
@@ -131,7 +131,7 @@ source .venv/bin/activate
 
 **Terminal 1️⃣: Docker**
 \`\`\`bash
-cd ~/veri_projesi
+cd industrial-iot-telemetry-pipeline
 docker-compose down -v
 docker-compose up -d
 docker-compose ps  # Check health
@@ -167,7 +167,6 @@ docker exec postgres psql -U postgres -d veri_db -c "SELECT COUNT(*) FROM mainte
 - Duplicates: 0
 - Quality Score: 100%
 - Batches Processed: 60+
-- Daily Growth: ~2000 records
 
 ## 📈 Performance
 
@@ -191,10 +190,21 @@ docker exec postgres psql -U postgres -d veri_db -c "SELECT COUNT(*) FROM mainte
 ## 🚨 Error Handling
 
 - Try-except blocks for API calls
-- Fallback to mock data on failure
+- Automatic retry with exponential backoff on connection failure
 - Comprehensive logging
 - Database transaction rollback
 - Retry with exponential backoff
+
+## 🔧 Challenges & Solutions
+
+**Spark → PostgreSQL Type Mismatch**
+Spark sent timestamp data as string, causing `SQLException` on insert. Resolved by explicitly casting with `to_timestamp(col("timestamp"), "yyyy-MM-dd HH:mm:ss")` before the write stage.
+
+**Docker Network Isolation**
+Spark running on the host could not reach PostgreSQL inside Docker via `localhost:5432`. Resolved by mapping the container port to `localhost:5433` in `docker-compose.yml`.
+
+**Kafka Topic Initialization Order**
+`UnknownTopicOrPartitionException` occurred when Spark started before the producer created the topic. Resolved by enforcing startup order: Docker → Producer → Spark.
 
 ## 🎓 Learning Outcomes
 
@@ -209,25 +219,10 @@ docker exec postgres psql -U postgres -d veri_db -c "SELECT COUNT(*) FROM mainte
 
 ## 🚀 Future Enhancements
 
-- [ ] Grafana real-time dashboard
-- [ ] Slack alert integration
-- [ ] Web dashboard (Flask)
-- [ ] Prometheus metrics export
+- [ ] ML-based anomaly detection (LSTM)
 - [ ] AWS RDS deployment
-- [ ] Kubernetes deployment
-- [ ] Machine learning anomaly detection
-- [ ] Advanced monitoring (ELK stack)
-
-## 🔐 Production Checklist
-
-- [ ] Kafka SASL/SSL authentication
-- [ ] PostgreSQL SSL connections
-- [ ] VPN/Firewall rules
-- [ ] ELK stack logging
-- [ ] PagerDuty alerting
-- [ ] Automated backups
-- [ ] Load testing (1000+ req/s)
-- [ ] Security audit
+- [ ] Kubernetes orchestration
+- [ ] Grafana real-time dashboard
 
 ## 🔄 Development Workflow
 
