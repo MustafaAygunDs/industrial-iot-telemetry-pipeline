@@ -1,6 +1,5 @@
 # Industrial IoT Telemetry & Predictive Maintenance Platform
 
-⚡ **Production-Ready Real-Time Streaming | Kafka + Spark + PostgreSQL**
 
 Enterprise-grade data pipeline for manufacturing equipment monitoring. Real-time collection, processing, and analysis of industrial sensor data (RPM, bearing temperature) with automated anomaly detection and predictive maintenance alerts.
 
@@ -263,7 +262,6 @@ MIT License
 
 ---
 
-**Last Updated:** 2026-04-10  
 **Version:** 1.0.0  
 **Status:** Production Ready ✅
 
