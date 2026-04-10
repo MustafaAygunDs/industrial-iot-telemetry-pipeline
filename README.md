@@ -15,6 +15,7 @@ Real-time industrial sensor data processing platform. The system processes multi
 - ✅ Automated anomaly detection
 
 ## 🏗️ Architecture
+```
 ┌─────────────────────────────────────────────┐
 │      INDUSTRIAL IoT PLATFORM                │
 └─────────────────────────────────────────────┘
@@ -26,7 +27,9 @@ Spark Streaming (Processing)
 ↓ Anomaly Detection
 PostgreSQL (maintenance_logs)
 ↓ Alerts & Monitoring
+```
 ## 📁 Project Structure
+```
 veri_projesi/
 ├── producer.py              # Sensor data generator (5 machines)
 ├── processor.py             # Spark streaming engine
@@ -34,6 +37,7 @@ veri_projesi/
 ├── init.sql                 # PostgreSQL schema
 ├── .gitignore               # Git ignore rules
 └── README.md                # This file
+```
 ## 🛠️ Tech Stack
 
 | Component | Technology | Version | Purpose |
