@@ -5,3 +5,4 @@ kafka_2.12-3.6.1/
 venv/
 .idea/
 __pycache__/
+.venv/
