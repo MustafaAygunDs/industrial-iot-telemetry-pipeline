@@ -16,21 +16,18 @@ Real-time industrial sensor data processing platform. The system processes multi
 - ✅ Automated anomaly detection
 
 ## 🏗️ Architecture
-
-\`\`\`
+┌─────────────────────────────────────────────┐
+│      INDUSTRIAL IoT PLATFORM                │
+└─────────────────────────────────────────────┘
 Producer (5 Machines)
-    ↓ JSON Messages
+↓ JSON Messages
 Kafka Topic (sensor_telemetry)
-    ↓ Streaming Data
+↓ Streaming Data
 Spark Streaming (Processing)
-    ↓ Anomaly Detection
+↓ Anomaly Detection
 PostgreSQL (maintenance_logs)
-    ↓ Alerts & Monitoring
-\`\`\`
-
+↓ Alerts & Monitoring
 ## 📁 Project Structure
-
-\`\`\`
 veri_projesi/
 ├── producer.py              # Sensor data generator (5 machines)
 ├── processor.py             # Spark streaming engine
@@ -38,8 +35,6 @@ veri_projesi/
 ├── init.sql                 # PostgreSQL schema
 ├── .gitignore               # Git ignore rules
 └── README.md                # This file
-\`\`\`
-
 ## 🛠️ Tech Stack
 
 | Component | Technology | Version | Purpose |
@@ -52,12 +47,12 @@ veri_projesi/
 
 ## 📈 Data Pipeline
 
-### 1️⃣ Extract (Producer)
+### Extract (Producer)
 
 **Data Source:** 5 Simulated Machines
-- **Motor-01, Motor-02:** Elektrik Motorları (2000-3000 RPM)
-- **CNC-01, CNC-02:** CNC Makineleri (2500-3500 RPM)
-- **Assembly-01:** Montaj Hattı (1500-2000 RPM)
+- Motor-01, Motor-02: Elektrik Motorları (2000-3000 RPM)
+- CNC-01, CNC-02: CNC Makineleri (2500-3500 RPM)
+- Assembly-01: Montaj Hattı (1500-2000 RPM)
 
 **Metrics:**
 - RPM (0-5000 with Gaussian distribution)
@@ -73,7 +68,7 @@ veri_projesi/
 }
 \`\`\`
 
-### 2️⃣ Transform (Spark)
+### Transform (Spark)
 
 **Anomaly Detection:**
 \`\`\`
@@ -85,14 +80,14 @@ ELSE:
   anomaly_level = "NORMAL" ✅
 \`\`\`
 
-### 3️⃣ Load (PostgreSQL)
+### Load (PostgreSQL)
 
 **Target:** maintenance_logs table
 - machine_id, rpm, bearing_temperature
 - timestamp, processed_at
 - anomaly_level, alert_message
 
-### 4️⃣ Validate
+### Validate
 
 **5 Quality Checks:**
 - ✅ No null timestamps
@@ -117,12 +112,10 @@ ELSE:
 
 ### Prerequisites
 
-\`\`\`bash
 - Ubuntu 20.04+ or WSL2
 - Java 11+ (for Spark)
 - Python 3.9+
 - Docker & Docker Compose
-\`\`\`
 
 ### Installation
 
@@ -133,7 +126,7 @@ source .venv/bin/activate
 
 ### Run Pipeline
 
-**Terminal 1: Docker**
+**Terminal 1️⃣: Docker**
 \`\`\`bash
 cd ~/veri_projesi
 docker-compose down -v
@@ -141,39 +134,37 @@ docker-compose up -d
 docker-compose ps  # Check health
 \`\`\`
 
-**Terminal 2: Spark (wait 30s)**
+**Terminal 2️⃣: Spark (wait 30s)**
 \`\`\`bash
-spark-submit \\
-  --master local[4] \\
-  --driver-memory 2g \\
-  --executor-memory 2g \\
-  --packages org.apache.spark:spark-sql-kafka-0-10_2.13:4.1.1,org.postgresql:postgresql:42.7.3,commons-pool:commons-pool:1.6 \\
-  --conf spark.sql.shuffle.partitions=4 \\
-  --conf spark.streaming.kafka.maxRatePerPartition=100 \\
-  --conf spark.sql.streaming.checkpointLocation=/tmp/spark-checkpoint \\
+spark-submit \
+  --master local[4] \
+  --driver-memory 2g \
+  --executor-memory 2g \
+  --packages org.apache.spark:spark-sql-kafka-0-10_2.13:4.1.1,org.postgresql:postgresql:42.7.3,commons-pool:commons-pool:1.6 \
+  --conf spark.sql.shuffle.partitions=4 \
+  --conf spark.streaming.kafka.maxRatePerPartition=100 \
+  --conf spark.sql.streaming.checkpointLocation=/tmp/spark-checkpoint \
   processor.py
 \`\`\`
 
-**Terminal 3: Producer**
+**Terminal 3️⃣: Producer**
 \`\`\`bash
 python3 producer.py
 \`\`\`
 
-**Terminal 4: Monitor**
+**Terminal 4️⃣: Monitor**
 \`\`\`bash
 docker exec postgres psql -U postgres -d veri_db -c "SELECT COUNT(*) FROM maintenance_logs;"
 \`\`\`
 
 ## 📊 Real-Time Metrics
 
-\`\`\`
-Total Records: 100+
-Null Records: 0
-Duplicates: 0
-Quality Score: 100%
-Batches Processed: 60+
-Daily Growth: ~2000 records
-\`\`\`
+- Total Records: 100+
+- Null Records: 0
+- Duplicates: 0
+- Quality Score: 100%
+- Batches Processed: 60+
+- Daily Growth: ~2000 records
 
 ## 📈 Performance
 
@@ -204,14 +195,14 @@ Daily Growth: ~2000 records
 
 ## 🎓 Learning Outcomes
 
-✅ Kafka partition management  
-✅ Spark Structured Streaming  
-✅ ETL pipeline design  
-✅ PostgreSQL optimization  
-✅ Docker containerization  
-✅ Data quality frameworks  
-✅ Timestamp handling  
-✅ Anomaly detection  
+- ✅ Kafka partition management
+- ✅ Spark Structured Streaming
+- ✅ ETL pipeline design
+- ✅ PostgreSQL optimization
+- ✅ Docker containerization
+- ✅ Data quality frameworks
+- ✅ Timestamp handling
+- ✅ Anomaly detection
 
 ## 🚀 Future Enhancements
 
@@ -266,14 +257,13 @@ MIT License
 
 ## 👤 Author
 
-**Mustafa AYGÜN**
-- Title: Data Engineer / IoT Specialist
+**Mustafa AYGÜN** - Data Engineer
 - GitHub: [@MustafaAygunDs](https://github.com/MustafaAygunDs)
 - Email: mustafaaygunds@gmail.com
 
 ---
 
-**Last Updated:** 2026-04-02  
+**Last Updated:** 2026-04-10  
 **Version:** 1.0.0  
 **Status:** Production Ready ✅
 
